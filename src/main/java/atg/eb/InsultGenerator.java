@@ -12,7 +12,15 @@ public class InsultGenerator {
         String theInsult = "";
 
         try {
-            connectToDatabase();
+
+            String databaseURL = "jdbc:postgresql://";
+            databaseURL += System.getenv("POSTGRESQL_SERVICE_HOST");
+            databaseURL += "/" + System.getenv("POSTGRESQL_DATABASE");
+
+            String username = System.getenv("POSTGRESQL_USER");
+            String password = System.getenv("PGPASSWORD");
+
+            connection = DriverManager.getConnection(databaseURL, username, password);
 
             if (connection != null) {
                 String SQL = "select a.string AS first, b.string AS second, c.string AS noun from short_adjective a , long_adjective b, noun c ORDER BY random() limit 1";
@@ -25,7 +33,7 @@ public class InsultGenerator {
                     }
                     theInsult = String.format("Thou art %s %s %s %s!", article,
                             rs.getString("first"), rs.getString("second"), rs.getString("noun"));
-                    
+
                     rs.close();
                     connection.close();
                 }
@@ -39,15 +47,6 @@ public class InsultGenerator {
     }
 
     private void connectToDatabase() throws SQLException {
-
-        String databaseURL = "jdbc:postgresql://";
-        databaseURL += System.getenv("POSTGRESQL_SERVICE_HOST");
-        databaseURL += "/" + System.getenv("POSTGRESQL_DATABASE");
-
-        String username = System.getenv("POSTGRESQL_USER");
-        String password = System.getenv("PGPASSWORD");
-
-        connection = DriverManager.getConnection(databaseURL, username, password);
     }
 
 }
