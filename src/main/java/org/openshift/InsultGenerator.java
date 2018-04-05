@@ -1,4 +1,4 @@
-package org.openshift;
+package atg.eb;
 
 import java.util.Random;
 
