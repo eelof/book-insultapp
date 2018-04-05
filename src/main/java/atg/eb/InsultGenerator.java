@@ -37,7 +37,7 @@ public class InsultGenerator {
 
     }
 
-    private void connectToDatabase() {
+    private void connectToDatabase() throws SQLException {
 
         String databaseURL = "jdbc:postgresql://";
         databaseURL += System.getenv("POSTGRESQL_SERVICE_HOST");
