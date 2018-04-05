@@ -11,9 +11,9 @@ public class InsultGenerator {
         String article = "an";
         String theInsult = "";
 
-        connectToDatabase();
-
         try {
+
+            connectToDatabase();
 
             String SQL = "select a.string AS first, b.string AS second, c.string AS noun from short_adjective a , long_adjective b, noun c ORDER BY random() limit 1";
             Statement stmt = connection.createStatement();
@@ -29,7 +29,7 @@ public class InsultGenerator {
                 connection.close();
             }
 
-        } catch(SQLException e) {
+        } catch (Exception e) {
             return e.getMessage();
         }
 
@@ -38,19 +38,15 @@ public class InsultGenerator {
     }
 
     private void connectToDatabase() {
-        try {
-            String databaseURL = "jdbc:postgresql://";
-            databaseURL += System.getenv("POSTGRESQL_SERVICE_HOST");
-            databaseURL += "/" + System.getenv("POSTGRESQL_DATABASE");
 
-            String username = System.getenv("POSTGRESQL_USER");
-            String password = System.getenv("PGPASSWORD");
+        String databaseURL = "jdbc:postgresql://";
+        databaseURL += System.getenv("POSTGRESQL_SERVICE_HOST");
+        databaseURL += "/" + System.getenv("POSTGRESQL_DATABASE");
 
-            connection = DriverManager.getConnection(databaseURL, username, password);
-        } catch (Exception e) {
-            System.out.println("Connection failure ");
-            System.out.print(e.getMessage());
-        }
+        String username = System.getenv("POSTGRESQL_USER");
+        String password = System.getenv("PGPASSWORD");
+
+        connection = DriverManager.getConnection(databaseURL, username, password);
     }
 
 }
